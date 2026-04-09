@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raquel — IA & Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #EDEAE3;
+    --text: #1C1A16;
+    --muted: #6B6860;
+    --accent: #2A5C45;
+    --accent-light: #D4E9DF;
+    --tag-bg: #E4DFD6;
+    --tag-text: #3A3830;
+    --border: rgba(28,26,22,0.12);
+    --card: #FFFFFF;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-desc {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 420px;
+    line-height: 1.75;
+    margin-bottom: 28px;
+  }
+
+  .header-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.18s ease;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: 1.5px solid var(--accent);
+  }
+
+  .btn-primary:hover { background: #1e4332; border-color: #1e4332; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-secondary:hover { background: var(--surface); }
+
+  /* AVATAR placeholder */
+  .avatar-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    border: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--accent);
+  }
+
+  .status-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2EAA6B;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* SECTIONS */
+  section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 24px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 18px;
+  }
+
+  .skill-icon {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .skill-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .skill-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: start;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .project-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .project-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .project-arrow {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.18s ease;
+  }
+
+  .project-card:hover .project-arrow { transform: translate(3px, -3px); }
+
+  .project-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .badge-progress { background: #FEF3C7; color: #92400E; }
+  .badge-done { background: #D1FAE5; color: #065F46; }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -21px;
+    top: 6px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    outline: 1px solid var(--accent);
+  }
+
+  .tl-period {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .tl-role {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .tl-company {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    font-size: 11px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  /* FOOTER */
+  footer {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 16px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    header { grid-template-columns: 1fr; }
+    .avatar-area { flex-direction: row; align-items: center; }
+    .project-card { grid-template-columns: 1fr; }
+    .project-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <span class="header-badge">Portfólio — IA & Dados</span>
+    <h1>Raquel,<br><em>de sistemas<br>para IA.</em></h1>
+    <p class="header-desc">
+      Coordenadora de Suporte em transição para Inteligência Artificial.
+      Mais de 10 anos em TI, ERP e liderança — agora construindo projetos
+      em visão computacional e dados.
+    </p>
+    <div class="header-links">
+      <a class="btn btn-primary" href="https://linkedin.com/in/SEU-USUARIO" target="_blank">LinkedIn ↗</a>
+      <a class="btn btn-secondary" href="https://github.com/SEU-USUARIO" target="_blank">GitHub</a>
+    </div>
+  </div>
+  <div class="avatar-area">
+    <div class="avatar">R</div>
+    <div class="status-dot">
+      <div class="dot"></div>
+      Aberta a oportunidades
+    </div>
+  </div>
+</header>
+
+<hr class="divider">
+
+<!-- PROJETOS -->
+<section>
+  <p class="section-label">Projetos</p>
+  <div class="projects-grid">
+
+    <a class="project-card" href="https://github.com/SEU-USUARIO/tcc-ecc-gado-leiteiro" target="_blank">
+      <div>
+        <span class="project-tag">TCC · Visão Computacional</span>
+        <h2 class="project-title">Estimativa de ECC e Peso de Gado Leiteiro</h2>
+        <p class="project-desc">
+          Sistema baseado em YOLOv8 e PyTorch para estimar automaticamente o Escore
+          de Condição Corporal e o peso de bovinos leiteiros a partir de imagens —
+          eliminando avaliação manual e subjetiva no campo.
+        </p>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">YOLOv8</span>
+          <span class="tag">Visão Computacional</span>
+          <span class="tag">Agronegócio</span>
+        </div>
+        <div class="project-status">
+          <span class="status-badge badge-progress">Em andamento</span>
+          IFG · Pós-graduação IA Aplicada
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </a>
+
+    <!-- Placeholder para próximos projetos -->
+    <div class="project-card" style="opacity: 0.45; cursor: default; pointer-events: none;">
+      <div>
+        <span class="project-tag">Em breve</span>
+        <h2 class="project-title">Próximo projeto</h2>
+        <p class="project-desc">Novos projetos em dados e IA serão adicionados em breve.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- HABILIDADES -->
+<section>
+  <p class="section-label">Habilidades técnicas</p>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🐍</div>
+      <div class="skill-name">Python</div>
+      <div class="skill-desc">Análise de dados, ML e automações</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">👁</div>
+      <div class="skill-name">Visão Computacional</div>
+      <div class="skill-desc">YOLOv8, PyTorch, OpenCV</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">IA Aplicada</div>
+      <div class="skill-desc">LLMs, automação com IA, prompting</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">⚙️</div>
+      <div class="skill-name">ERP Totvs</div>
+      <div class="skill-desc">Protheus · ADVPL · Implantação</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🗄️</div>
+      <div class="skill-name">Infraestrutura de TI</div>
+      <div class="skill-desc">Redes, CFTV, suporte técnico</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">👥</div>
+      <div class="skill-name">Liderança técnica</div>
+      <div class="skill-desc">Times de suporte e implantação</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TRAJETÓRIA -->
+<section>
+  <p class="section-label">Trajetória</p>
+  <div class="timeline">
+    <div class="tl-item">
+      <p class="tl-period">Atual · 3 anos</p>
+      <p class="tl-role">Coordenadora de Suporte</p>
+      <p class="tl-company">Totvs Brasil Central</p>
+    </div>
+    <div class="tl-item">
+      <p class="tl-period">Anterior · 3 anos</p>
+      <p class="tl-role">Líder Técnico de Suporte</p>
+      <p class="tl-company">Totvs Brasil Central</p>
+    </div>
+    <div class="tl-item">
+      <p class="tl-period">Anterior</p>
+      <p class="tl-role">Analista Desenvolvedora Jr · Implantação de módulos</p>
+      <p class="tl-company">Totvs Brasil Central · compras, estoque, financeiro, faturamento</p>
+    </div>
+    <div class="tl-item">
+      <p class="tl-period">Anterior</p>
+      <p class="tl-role">Analista de TI — Totvs Protheus</p>
+      <p class="tl-company">Distribuidora farmacêutica</p>
+    </div>
+    <div class="tl-item">
+      <p class="tl-period">Início de carreira</p>
+      <p class="tl-role">Analista de Sistemas · Infra & TI</p>
+      <p class="tl-company">ADVPL · Redes · CFTV</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<footer>
+  <p class="footer-text">Aparecida de Goiânia, GO · Brasil</p>
+  <div class="footer-links">
+    <a href="https://linkedin.com/in/SEU-USUARIO" target="_blank">LinkedIn</a>
+    <a href="https://github.com/SEU-USUARIO" target="_blank">GitHub</a>
+    <a href="https://instagram.com/arquivodedados" target="_blank">@arquivodedados</a>
+  </div>
+</footer>
+
+</body>
+</html>
